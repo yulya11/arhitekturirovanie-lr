@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:13.3
-    container_name: postgres-lab3
+    container_name: postgres-archapp-lab3
     environment:
       POSTGRES_DB: "apidemo-db"
       POSTGRES_USER: "postgres"
@@ -15,7 +15,7 @@ services:
 
   keydb:
     image: "eqalpha/keydb:x86_64_v5.3.3"
-    container_name: keydb-lab3
+    container_name: keydb-archapp-lab3
     command: "keydb-server /etc/keydb/redis.conf --server-threads 2"
     volumes:
       #      - "./redis.conf:/etc/keydb/redis.conf"
@@ -23,6 +23,18 @@ services:
     ports:
       - "6379:6379"
     restart: unless-stopped
+    
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    container_name: rabbitmq-archapp-lab3
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - ./rabbitmq-data:/var/lib/rabbitmq
 
 volumes:
   data:
